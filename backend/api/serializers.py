@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from . models import Test
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -18,5 +20,10 @@ class UserSerializer(serializers.ModelSerializer):
             validated_data['email'],
             validated_data['password']
         )
-
         return user
+    
+
+class TestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Test
+        fields = '__all__'
