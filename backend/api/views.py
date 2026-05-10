@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . models import Test
 
 from rest_framework.decorators import api_view
-from . serializers import UserSerializer, TestSerializer
+from . serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -38,12 +37,15 @@ def back_health(request):
         try:
             connections[db_name].cursor()
         except OperationalError:
-            return HttpResponse("status: db down", status=503)
+            return HttpResponse("Status: DB Down", status=503)
+    return HttpResponse("Health OK", status=200)
 
-    return HttpResponse("Health: OK", status=200)
 
 def back_start(request):
-    return HttpResponse("Started", status=200)
+    try:
+        return HttpResponse("Started", status=200)
+    except Exception:
+        return HttpResponse("Start Failed", status=503)
 
 
 def back_ready(request):
@@ -51,27 +53,28 @@ def back_ready(request):
         try:
             connections[db_name].cursor()
         except OperationalError:
-            return HttpResponse("db down", status=503)
-
+            return HttpResponse("Status: DB Down", status=503)
     return HttpResponse("Ready", status=200)
 
 
+@api_view(['GET'])
 def back_live(request):
     for db_name in connections:
         try:
             connections[db_name].cursor()
         except OperationalError:
-            return HttpResponse("db down", status=503)
-
+            return HttpResponse("Status: DB Down", status=503)
     return HttpResponse("Live", status=200)
-
 
 ############################################################################
 # Frontend..................................................................
 
 @api_view(['GET'])
 def front_start(request):
-    return Response("Started", status=200)
+    try:
+        return Response("Started", status=200)
+    except Exception:
+        return Response("Start Failed", status=503)
 
 
 @api_view(['GET'])
@@ -80,9 +83,8 @@ def front_ready(request):
         try:
             connections[db_name].cursor()
         except OperationalError:
-            return HttpResponse("db down", status=503)
-
-    return HttpResponse("Ready", status=200)
+            return Response("Status: DB Down", status=503)
+    return Response("Ready", status=200)
 
 
 @api_view(['GET'])
@@ -91,9 +93,8 @@ def front_live(request):
         try:
             connections[db_name].cursor()
         except OperationalError:
-            return HttpResponse("db down", status=503)
-
-    return HttpResponse("Live", status=200)
+            return Response("Status: DB Down", status=503)
+    return Response("Live", status=200)
 
 
 ############################################################################

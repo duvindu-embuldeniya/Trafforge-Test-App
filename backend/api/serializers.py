@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 
-class TestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Test
-        fields = '__all__'
+# class TestSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Test
+#         fields = '__all__'
