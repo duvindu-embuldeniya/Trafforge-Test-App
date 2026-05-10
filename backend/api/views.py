@@ -11,6 +11,11 @@ from django.db import connections
 from django.db.utils import OperationalError
 
 
+# wso2................................
+from . models import Test
+from . serializers import TestSerializer
+
+
 
 def home(request):
     return HttpResponse("<h1>Home Page</h1>")
@@ -98,3 +103,9 @@ def front_live(request):
 
 
 ############################################################################
+
+@api_view(['GET'])
+def gettests(request):
+    tests = Test.objects.all()
+    serializer = TestSerializer(tests, many=True)
+    return Response(serializer.data)

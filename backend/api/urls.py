@@ -16,4 +16,8 @@ urlpatterns = [
     path('front_start/', front_start, name='front_start'),
     path('front_ready/', front_ready, name='front_ready'),
     path('front_live/', front_live, name='front_live'),
+
+
+    #for wso2.........................................
+    path('tests/', gettests, name = 'gettests')
 ]
