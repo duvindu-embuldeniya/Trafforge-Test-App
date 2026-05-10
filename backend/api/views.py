@@ -109,3 +109,9 @@ def gettests(request):
     tests = Test.objects.all()
     serializer = TestSerializer(tests, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def gettest(request, pk):
+    test = Test.objects.get(id=pk)
+    serializer = TestSerializer(test, many=False)
+    return Response(serializer.data)

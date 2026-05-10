@@ -19,5 +19,6 @@ urlpatterns = [
 
 
     #for wso2.........................................
-    path('tests/', gettests, name = 'gettests')
+    path('tests/', gettests, name = 'gettests'),
+    path('test/<int:pk>/', gettest, name = 'gettest')
 ]
