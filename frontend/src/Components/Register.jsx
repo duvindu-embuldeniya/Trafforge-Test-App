@@ -7,10 +7,11 @@ const Register = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const[errors, setErrors] = useState({})
+  const [success, setSuccess] = useState(false)
 
   const handleRegistration = async (e) => {
     e.preventDefault()
-    // console.log("Test")
 
     const userData = {
       username, email, password
@@ -18,10 +19,14 @@ const Register = () => {
 
     try{
       const response = await axios.post('http://127.0.0.1:8000/api/v1/register/', userData)
-      console.log('response.data ->', response.data)
+      setErrors({})
+      setUsername('')
+      setEmail('')
+      setPassword('')
+      setSuccess(true)
     }
     catch(error){
-      console.log('error ->', error.response.data)
+      setErrors(error.response.data)
     }
   }
 
@@ -33,10 +38,22 @@ const Register = () => {
             <h3 className='text-light text-center mb-4'>Create an Account</h3>
 
             <form onSubmit={handleRegistration}>
+              <div className='mb-3'>
+                <input type="text" required className='form-control' placeholder='Enter Username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                <small>{errors.username && <div className='text-danger'>{errors.username}</div>}</small>
+              </div>
+             
+              <div className='mb-3'>
+                <input type="email" required className='form-control' placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <small>{errors.email && <div className='text-danger'>{errors.email}</div>}</small>
+              </div>
+              
+              <div className='mb-3'>
+                <input type="password" required className='form-control' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <small>{errors.password && <div className='text-danger'>{errors.password}</div>}</small>
+              </div>
 
-              <input type="text" required className='form-control mb-3' placeholder='Enter Username' value={username} onChange={(e) => setUsername(e.target.value)} />
-              <input type="email" required className='form-control mb-3' placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} />
-              <input type="password" required className='form-control mb-5' placeholder='Enter Password' value={password} onChange={(e) => setPassword(e.target.value)} />
+              {success && <div className='alert alert-success'>Account Created Successfully !</div>}
 
               <button type='submit' className='btn btn-info d-block mx-auto' >Register</button>
             </form>
