@@ -9,9 +9,11 @@ const Register = () => {
   const [password, setPassword] = useState('')
   const[errors, setErrors] = useState({})
   const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleRegistration = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const userData = {
       username, email, password
@@ -27,6 +29,9 @@ const Register = () => {
     }
     catch(error){
       setErrors(error.response.data)
+    }
+    finally{
+      setLoading(false)
     }
   }
 
@@ -55,7 +60,11 @@ const Register = () => {
 
               {success && <div className='alert alert-success'>Account Created Successfully !</div>}
 
-              <button type='submit' className='btn btn-info d-block mx-auto' >Register</button>
+              {loading ? (
+                <button type='submit' className='btn btn-info d-block mx-auto' disabled>Please Wait...</button>
+              ) : (
+                <button type='submit' className='btn btn-info d-block mx-auto' >Register</button>
+              )}
             </form>
 
           </div>
