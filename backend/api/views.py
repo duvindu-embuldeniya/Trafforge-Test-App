@@ -24,11 +24,11 @@ def health(request):
 
     return HttpResponse("status: ok", status=200)
 
-def startup(request):
+def start(request):
     return HttpResponse("started", status=200)
 
 
-def readiness(request):
+def ready(request):
     for db_name in connections:
         try:
             connections[db_name].cursor()
@@ -38,7 +38,7 @@ def readiness(request):
     return HttpResponse("ready", status=200)
 
 
-def liveness(request):
+def live(request):
     for db_name in connections:
         try:
             connections[db_name].cursor()
