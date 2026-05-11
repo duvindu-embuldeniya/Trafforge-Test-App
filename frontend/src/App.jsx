@@ -1,8 +1,8 @@
 import './assets/css/style.css'
-import Main from './Components/Main'
+import Main from './components/Main'
 import { BrowserRouter,Routes,Route} from "react-router-dom"
-import Register from './Components/Register'
-import Login from './Components/Login'
+import Register from './components/Register'
+import Login from './components/Login'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import FrontStart from './components/FrontStart'
