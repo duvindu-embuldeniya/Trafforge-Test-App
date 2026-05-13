@@ -62,7 +62,6 @@ def back_ready(request):
     return HttpResponse("Ready", status=200)
 
 
-@api_view(['GET'])
 def back_live(request):
     for db_name in connections:
         try:

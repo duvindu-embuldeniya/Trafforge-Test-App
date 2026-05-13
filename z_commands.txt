@@ -1,0 +1,19 @@
+//Local Check//
+kubectl apply -f secrets.yaml
+kubectl apply -f headless-svc.yaml
+kubectl apply -f statefulset.yaml
+>>> kubectl get statefulset
+
+kubectl apply -f back-deployment.yaml
+>>> kubectl get pods
+>>> kubectl exec -it <any_pod> -- python manage.py migrate
+kubectl apply -f back-svc.yaml
+kubectl apply -f back-hpa.yaml
+
+kubectl apply -f front-deployment.yaml
+>>> kubectl get pods
+kubectl apply -f front-svc.yaml
+kubectl apply -f front-hpa.yaml
+
+>>> kubectl port-forward service/react-svc 80:80
+>>> http://localhost:80

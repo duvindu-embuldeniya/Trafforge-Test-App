@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: react-app
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: react
+
+  template:
+    metadata:
+      labels:
+        app: react
+
+    spec:
+      containers:
+        - name: react
+          image: duvindune/frontend:latest
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+
+          startupProbe:
+            httpGet:
+              path: /front_start
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 60
+
+          readinessProbe:
+            httpGet:
+              path: /front_ready
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /front_live
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3

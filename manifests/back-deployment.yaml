@@ -74,7 +74,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: POSTGRES_PASSWORD
+                  key: POSTGRES_PASSWORD 
 
             - name: DB_HOST
               value: postgres-svc
