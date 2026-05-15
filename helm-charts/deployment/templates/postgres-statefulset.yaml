@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.postgres.name }}
 
 spec:
-  serviceName: {{ .Values.postgres.service.name }}
+  serviceName: "{{ .Values.postgres.service.name }}"
   replicas: {{ .Values.postgres.replicaCount }}
 
   selector:
@@ -29,23 +29,23 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: "{{ .Values.secret.name }}"
                   key: POSTGRES_DB
 
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: "{{ .Values.secret.name }}"
                   key: POSTGRES_USER
 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
+                  name: "{{ .Values.secret.name }}"
                   key: POSTGRES_PASSWORD
 
             - name: PGDATA
-              value: {{ .Values.postgres.pgdata }}
+              value: "{{ .Values.postgres.pgdata }}"
 
           volumeMounts:
             - name: pgdata
@@ -57,8 +57,8 @@ spec:
 
       spec:
         accessModes:
-          - {{ .Values.postgres.storage.accessMode }}
+          - "{{ .Values.postgres.storage.accessMode }}"
 
         resources:
           requests:
-            storage: {{ .Values.postgres.storage.size }}
+            storage: "{{ .Values.postgres.storage.size }}"

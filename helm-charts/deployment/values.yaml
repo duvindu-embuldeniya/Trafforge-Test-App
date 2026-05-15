@@ -129,3 +129,26 @@ secret:
   db: mydatabase
   user: postgres
   password: mysecurepassword123
+
+
+managedCertificate:
+  name: django-mc
+
+  domains:
+    - duvindu.org
+    - www.duvindu.org
+
+
+ingress:
+  name: react-ingress
+  staticIPName: k8s-test
+  className: gce
+
+  hosts:
+    - host: duvindu.org
+      path: /*
+      pathType: ImplementationSpecific
+
+    - host: www.duvindu.org
+      path: /*
+      pathType: ImplementationSpecific

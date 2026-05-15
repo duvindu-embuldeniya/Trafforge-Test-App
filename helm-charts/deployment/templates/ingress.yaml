@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: "{{ .Values.ingress.name }}"
+
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "{{ .Values.ingress.staticIPName }}"
+    kubernetes.io/ingress.class: "{{ .Values.ingress.className }}"
+    networking.gke.io/managed-certificates: "{{ .Values.managedCertificate.name }}"
+
+spec:
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host }}
+
+      http:
+        paths:
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+
+            backend:
+              service:
+                name: "{{ $.Values.frontend.service.name }}"
+                port:
+                  number: {{ $.Values.frontend.service.port }}
+    {{- end }}
