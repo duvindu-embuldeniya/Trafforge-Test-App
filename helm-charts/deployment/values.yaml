@@ -1,0 +1,131 @@
+backend:
+  name: django-deployment
+  replicaCount: 2
+
+  image:
+    repository: duvindune/backend
+    tag: "1"
+
+  containerPort: 8000
+
+  service:
+    name: django-svc
+    type: ClusterIP
+    port: 8000
+    targetPort: 8000
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "250m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
+  probes:
+    startup:
+      path: /api/v1/back_start/
+      initialDelaySeconds: 0
+      periodSeconds: 5
+      timeoutSeconds: 5
+      failureThreshold: 60
+
+    readiness:
+      path: /api/v1/back_ready/
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 2
+      failureThreshold: 3
+
+    liveness:
+      path: /api/v1/back_live/
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 2
+      failureThreshold: 3
+
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization: 50
+
+
+frontend:
+  name: react-app
+  replicaCount: 2
+
+  image:
+    repository: duvindune/frontend
+    tag: "1"
+
+  containerPort: 80
+
+  service:
+    name: react-svc
+    type: NodePort
+    port: 80
+    targetPort: 80
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+
+  probes:
+    startup:
+      path: /front_start
+      initialDelaySeconds: 0
+      periodSeconds: 5
+      timeoutSeconds: 5
+      failureThreshold: 60
+
+    readiness:
+      path: /front_ready
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 2
+      failureThreshold: 3
+
+    liveness:
+      path: /front_live
+      initialDelaySeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 2
+      failureThreshold: 3
+
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    cpuUtilization: 50
+
+
+postgres:
+  name: postgres
+  replicaCount: 1
+
+  image:
+    repository: postgres
+    tag: "16"
+
+  service:
+    name: postgres-svc
+    port: 5432
+    targetPort: 5432
+
+  storage:
+    size: 1Gi
+    accessMode: ReadWriteOnce
+
+  pgdata: /var/lib/postgresql/data/pgdata
+
+
+secret:
+  name: postgres-secret
+  db: mydatabase
+  user: postgres
+  password: mysecurepassword123

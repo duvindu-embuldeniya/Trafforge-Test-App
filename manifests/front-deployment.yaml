@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: react
-          image: duvindune/frontend:latest
+          image: duvindune/frontend:1
 
           ports:
             - containerPort: 80
