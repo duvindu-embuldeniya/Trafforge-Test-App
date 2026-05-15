@@ -17,3 +17,20 @@ kubectl apply -f front-hpa.yaml
 
 >>> kubectl port-forward service/react-svc 80:80
 >>> http://localhost:80
+
+
+//-----GKE Phase-----//
+>> front-svc edit
+
+.. STATIC IP (Global) Reserve from Google
+.. Cloudflare A Records Configuration
+
+>> cert, ingress
+
+>> helm install....
+
+* kubectl get managedcertificate <>
+* kubectl describe managedcertificate <>
+* kubectl describe ingress <>
+
+.. Cloudflare Full(Strick Mode) Enable

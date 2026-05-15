@@ -1,0 +1,17 @@
+//DOCKER HUB PART...//
+docker tag simply:latest <your-dockerhub-username>/<repo1:v1.0>
+docker push <your-dockerhub-username>/<repo1:v1.0>
+pull it
+docker run -p 8000:8000 duvindune/repo1:v1.0
+ 
+----------------------------------------------------------------------------------------------
+
+//GAR PART...//
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+gcloud auth configure-docker REGION-docker.pkg.dev
+
+
+europe-west4-docker.pkg.dev/duvindu-495014/backend
+docker tag simply:latest europe-west4-docker.pkg.dev/duvindu-495014/test-repo/simply:latest
+docker push europe-west4-docker.pkg.dev/duvindu-495014/test-repo/simply:latest

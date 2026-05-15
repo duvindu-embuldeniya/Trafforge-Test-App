@@ -1,0 +1,34 @@
+gcloud version
+gcloud init
+
+gcloud config list
+gcloud auth list
+
+after creating cluster...//
+gcloud container clusters list
+
+.....
+gcloud container clusters get-credentials <demo-cluster> --region <asia-south1>
+(plugin install)
+gcloud container clusters get-credentials <demo-cluster> --region <asia-south1>
+.....
+
+kubectl config get-contexts
+kubectl config current-context
+
+kubectl config use-context <kind-kind-3node>
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+kubectl delete all --all
+kubectl delete configmap --all
+kubectl delete secret --all
+kubectl delete pvc --all
+kubectl delete ingress --all
+
+>> cluster delete via gcp dashbaord manually...
+
+>>> to remove that Kubernetes context from your local kubeconfig:
+kubectl config delete-context <gke_duvindu-495014_europe-west4_demo-cluster>
