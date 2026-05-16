@@ -1,12 +1,12 @@
 name: Build + Push + Deploy to GKE using Artifact Registry + Helm
 
-# on:
-#   workflow_dispatch:
-
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
+# on:
+#   push:
+#     branches:
+#       - main
 
 env:
   # =========================
