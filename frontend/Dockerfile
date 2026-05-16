@@ -8,8 +8,8 @@ RUN npm install
 
 COPY . .
 
-# ENV VITE_SERVER_BASE_URL=/api/v1
-ENV VITE_SERVER_BASE_URL=http://localhost:8000/api/v1
+ENV VITE_SERVER_BASE_URL=/api/v1
+# ENV VITE_SERVER_BASE_URL=http://localhost:8000/api/v1
 
 RUN npm run build
 
