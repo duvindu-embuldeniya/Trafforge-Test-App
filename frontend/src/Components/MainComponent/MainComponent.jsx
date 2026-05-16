@@ -1,8 +1,8 @@
 import React from 'react'
-import Button from './Button'
+import ButtonComponent from '../ButtonComponent/ButtonComponent';
 
 
-const Main = () => {
+const MainComponent = () => {
   return (
     <>
         <div className='container'>
@@ -21,11 +21,11 @@ const Main = () => {
                     Lorem ipsum dolor sit amet.
                     Lorem ipsum dolor sit amet.
                 </p>
-                <Button class='btn btn-outline-info' text='Login' url='/login' />
+                <ButtonComponent class='btn btn-outline-info' text='Login' url='/login' />
             </div>
         </div>
     </>
   )
 }
 
-export default Main
+export default MainComponent

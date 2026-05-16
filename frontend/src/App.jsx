@@ -1,13 +1,13 @@
 import './assets/css/style.css'
-import Main from './components/Main'
+import MainComponent from './Components/MainComponent/MainComponent'
 import { BrowserRouter,Routes,Route} from "react-router-dom"
-import Register from './components/Register'
-import Login from './components/Login'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import FrontStart from './components/FrontStart'
-import FrontReady from './components/FrontReady'
-import FrontLive from './components/FrontLive'
+import RegisterComponent from './Components/RegisterComponent/RegisterComponent'
+import LoginComponent from './Components/LoginComponent/LoginComponent'
+import HeaderComponent from './Components/HeaderComponent/HeaderComponent'
+import FooterComponent from './Components/FooterComponent/FooterComponent'
+import FrontStartComponent from './Components/FrontStartComponent/FrontStartComponent'
+import FrontReadyComponent from './Components/FrontReadyComponent/FrontReadyComponent'
+import FrontLiveComponent from './Components/FrontLiveComponent/FrontLiveComponent'
 
 function App() {
 
@@ -15,20 +15,20 @@ function App() {
     <>
       <BrowserRouter>
 
-        <Header></Header>
+        <HeaderComponent></HeaderComponent>
 
           <Routes>
-            <Route path='/' element={<Main />} />
+            <Route path='/' element={<MainComponent />} />
 
-            <Route path='/register' element={<Register />} />
-            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<RegisterComponent />} />
+            <Route path='/login' element={<LoginComponent />} />
 
-            <Route path='/front_start' element={<FrontStart />} />
-            <Route path='/front_ready' element={<FrontReady />} />
-            <Route path='/front_live' element={<FrontLive />} />
+            <Route path='/front_start' element={<FrontStartComponent />} />
+            <Route path='/front_ready' element={<FrontReadyComponent />} />
+            <Route path='/front_live' element={<FrontLiveComponent />} />
           </Routes>
 
-        <Footer></Footer>
+        <FooterComponent></FooterComponent>
 
       </BrowserRouter>
     </>

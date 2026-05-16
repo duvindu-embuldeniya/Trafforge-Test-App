@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const FrontReady = () => {
+const FrontStartComponent = () => {
 
   const [status, setStatus] = useState('')
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_SERVER_BASE_URL}/front_ready/`)
+    axios.get(`${import.meta.env.VITE_SERVER_BASE_URL}/front_start/`)
       .then(res => setStatus(res.data))
-      .catch(() => setStatus("DB Error"))
+      .catch(() => setStatus("Error"))
   }, [])
 
   return (
     <div className='text-light'>
-      Front Ready: {status}
+      Front Start: {status}
     </div>
   )
 }
 
-export default FrontReady
+export default FrontStartComponent

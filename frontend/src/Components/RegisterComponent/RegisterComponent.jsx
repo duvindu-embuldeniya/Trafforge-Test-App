@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 
-const Register = () => {
+const RegisterComponent = () => {
 
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
@@ -76,4 +76,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterComponent
