@@ -1,0 +1,94 @@
+name: Build + Push + Deploy to GKE using Artifact Registry + Helm
+
+# on:
+#   workflow_dispatch:
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  # =========================
+  # GCP (ALL FROM SECRETS)
+  # =========================
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
+  GKE_REGION: ${{ secrets.GKE_REGION }}
+
+  # =========================
+  # ARTIFACT REGISTRY (FROM SECRETS)
+  # =========================
+  GAR_REGION: ${{ secrets.GAR_REGION }}
+  GAR_REPOSITORY_BACKEND: ${{ secrets.GAR_REPOSITORY_BACKEND }}
+  GAR_REPOSITORY_FRONTEND: ${{ secrets.GAR_REPOSITORY_FRONTEND }}
+
+  BACKEND_IMAGE: ${{ secrets.GAR_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GAR_REPOSITORY_BACKEND }}/backend
+  FRONTEND_IMAGE: ${{ secrets.GAR_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GAR_REPOSITORY_FRONTEND }}/frontend
+
+  IMAGE_TAG: ${{ github.run_number }}
+
+  # =========================
+  # HELM (OPTIONAL BUT CLEANED)
+  # =========================
+  HELM_RELEASE: ${{ secrets.HELM_RELEASE }}
+  HELM_CHART_PATH: ${{ secrets.HELM_CHART_PATH }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          install_components: gke-gcloud-auth-plugin
+
+      - name: Configure Docker Authentication
+        run: |
+          gcloud auth configure-docker $GAR_REGION-docker.pkg.dev --quiet
+
+      - name: Connect to GKE Cluster
+        run: |
+          gcloud container clusters get-credentials $GKE_CLUSTER \
+            --region $GKE_REGION \
+            --project $PROJECT_ID
+
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t $BACKEND_IMAGE:$IMAGE_TAG ./backend
+
+      - name: Push Backend Docker Image
+        run: |
+          docker push $BACKEND_IMAGE:$IMAGE_TAG
+
+      - name: Build Frontend Docker Image
+        run: |
+          docker build -t $FRONTEND_IMAGE:$IMAGE_TAG ./frontend
+
+      - name: Push Frontend Docker Image
+        run: |
+          docker push $FRONTEND_IMAGE:$IMAGE_TAG
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+
+      - name: Helm Upgrade / Install
+        run: |
+          helm upgrade --install $HELM_RELEASE $HELM_CHART_PATH \
+            -f $HELM_CHART_PATH/values.yaml \
+            --set backend.image.repository=$BACKEND_IMAGE \
+            --set backend.image.tag=$IMAGE_TAG \
+            --set frontend.image.repository=$FRONTEND_IMAGE \
+            --set frontend.image.tag=$IMAGE_TAG \
+            --atomic \
+            --timeout 10m
